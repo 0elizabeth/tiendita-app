@@ -78,10 +78,11 @@
               </div>
               <div class="col-ms-12 col-md-2">
                 {!! Form::label(null, 'total', [null]) !!}
-                {!! Form::number('total', $venta->total, ['class'=>'form-control']) !!}
+                <label id="total_l" for=""> </label>
+                {{-- {!! Form::text('total', null, ['class'=>'form-control','id'=>'total']) !!} --}}
               </div>
             </div>
-            <table class="table">
+            <table class="table" id="tabla_ventas">
                 <thead>
                     <tr>
                         <th style="width: 4rem"></th>
@@ -117,6 +118,7 @@
   const text = select.options[select.selectedIndex].text;
   const txt_cantidad = document.getElementById('cantidad');
   const txt_precio = document.getElementById('precio');
+  const txt_total = document.getElementById('total_l');
   let data = text.split('-');
   console.log(data);
   //creamos la fila
@@ -140,6 +142,7 @@
   cantidad.innerHTML= txt_cantidad.value;
   nombre.innerHTML = data[0];
   precio.innerHTML = txt_precio.value;
+  
   row.appendChild(c_btn);
   row.appendChild(cantidad);
   row.appendChild(nombre);
@@ -151,14 +154,18 @@
   if(verificar){
     let c_cantidad = document.getElementById("cant_"+select.value);
     c_cantidad.innerHTML = parseInt(c_cantidad.innerHTML) + parseInt(txt_cantidad.value);
+    let subto = document.getElementById("subt_"+select.value);
+    subto.innerHTML = parseInt(c_cantidad.innerHTML) * parseInt(txt_precio.value);
   }else{
-    
-    
     tabla.appendChild(row);
   }
-  let subto = document.getElementById("subt_"+select.value);
-  subto.innerHTML = parseInt(txt_cantidad.value) * parseInt(txt_precio.value);
+  let subtotalCells = document.querySelectorAll("[id^='subt_']");
+  let total = 0;
 
+for (let i = 0; i < subtotalCells.length; i++) {
+    total += parseInt(subtotalCells[i].innerHTML);
+}
+txt_total.value = total;
 });
 
   const catalogos = document.getElementById('catalogo');
