@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Catalogo;
 use App\Models\Compra;
 use App\Models\Proveedore;
 use Illuminate\Http\Request;
@@ -36,7 +37,9 @@ class IngresoController extends Controller
         //
         $ingreso = new Compra();
         $proveedore = Proveedore::pluck('nombre','id');
-        return view('control.administrador.compras.ingresos.create', compact('ingreso', 'proveedore'));
+        $catalogos = Catalogo::orderBy('nombre', 'asc')
+        ->get();
+        return view('control.administrador.compras.ingresos.create', compact('ingreso', 'proveedore', 'catalogos'));
     }
 
     /**
